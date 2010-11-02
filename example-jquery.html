@@ -1,0 +1,20 @@
+<!DOCTYPE html >
+<html>
+<head>
+  <style type="text/css">
+    body {font-family: sans-serif}
+    h1 {font-weight: normal}
+    .fat {font-weight: bold}
+  </style>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+  <script type="text/javascript" src="jquery.hiccup.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+        $.hiccup("h1", "Hello world - ",
+                 ["span.fat", "meet hiccup.js!"]).appendTo("body");
+    });
+  </script>
+</head>
+<body>
+</body>
+</html>

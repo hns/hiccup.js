@@ -38,21 +38,21 @@ if (typeof exports === "undefined" || !exports) {
             }
             buffer.push("<", tag);
             for (var key in attr) {
-                buffer.push(" ", key, "=\"", attr[key], "\"");
+                writeAttribute(key, attr[key], buffer);
             }
             if (index === list.length && !(tag in containerTags)) {
                 buffer.push(" />");
             } else {
                 buffer.push(">");
-                buildContent(list, index, buffer);
+                writeContent(list, index, buffer);
                 buffer.push("</", tag, ">");
             }
         } else {
-            buildContent(list, index, buffer);
+            writeContent(list, index, buffer);
         }
     }
 
-    function buildContent(list, index, buffer) {
+    function writeContent(list, index, buffer) {
         var length = list.length;
         while (index < length) {
             var item = list[index++];
@@ -64,12 +64,30 @@ if (typeof exports === "undefined" || !exports) {
         }
     }
 
+    function writeAttribute(key, value, buffer) {
+        if (typeof value === "boolean") {
+            if (value) {
+                buffer.push(" ", key, "=\"", key, "\"");
+            }
+        } else if (value != null) {
+            buffer.push(" ", key, "=\"", escape(String(value)), "\"");
+        }
+    }
+
     function isObject(item) {
         return item instanceof Object && item.constructor !== Array;
     }
 
     function isArray(item) {
         return item instanceof Object && item.constructor === Array;
+    }
+
+    function escape(str) {
+        return str
+                .replace(/&/g, '&amp;')
+                .replace(/"/g, '&quot;')
+                .replace(/>/g, '&gt;')
+                .replace(/</g, '&lt;');
     }
 
     function mergeAttributes(attr1, attr2) {

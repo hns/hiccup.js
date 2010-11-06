@@ -28,7 +28,6 @@ if (typeof exports === "undefined" || !exports) {
 
     function build(list, buffer) {
         var index = 0;
-        var length = list.length;
         if (typeof list[index] === "string") {
             var tag = splitTag(list[index++]);
             var attr = tag[1];
@@ -75,19 +74,19 @@ if (typeof exports === "undefined" || !exports) {
     }
 
     function isObject(item) {
-        return item instanceof Object && item.constructor !== Array;
+        return item instanceof Object && !isArray(item);
     }
 
-    function isArray(item) {
-        return item instanceof Object && item.constructor === Array;
+    // use native ES5 Array.isArray if available
+    var isArray = Array.isArray || function(item) {
+        return item && item.constructor === Array;
     }
 
     function escape(str) {
-        return str
-                .replace(/&/g, '&amp;')
-                .replace(/"/g, '&quot;')
-                .replace(/>/g, '&gt;')
-                .replace(/</g, '&lt;');
+        return str.replace(/&/g, '&amp;')
+                  .replace(/"/g, '&quot;')
+                  .replace(/>/g, '&gt;')
+                  .replace(/</g, '&lt;');
     }
 
     function mergeAttributes(attr1, attr2) {

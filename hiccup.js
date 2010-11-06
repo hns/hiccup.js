@@ -6,6 +6,12 @@ if (typeof exports === "undefined" || !exports) {
 
 (function(exports) {
 
+    // list of elements that need explicit close tag
+    var containerTags = {"a":1, "b":1, "body":1, "dd":1, "div":1, "dl":1, "dt":1,
+    "em":1, "fieldset":1, "form":1, "h1":1, "h2":1, "h3":1, "h4":1, "h5":1, "h6":1,
+    "head":1, "html":1, "i":1, "label":1, "li":1, "ol":1, "pre":1, "script":1,
+    "span":1, "strong":1, "style":1, "textarea":1, "ul":1, "option":1};
+
     var html = exports.html = function() {
         var buffer = [];
         build(arguments, buffer);
@@ -34,15 +40,19 @@ if (typeof exports === "undefined" || !exports) {
             for (var key in attr) {
                 buffer.push(" ", key, "=\"", attr[key], "\"");
             }
-            buffer.push(">");
-            buildRest(list, index, buffer);
-            buffer.push("</", tag, ">");
+            if (index === list.length && !(tag in containerTags)) {
+                buffer.push(" />");
+            } else {
+                buffer.push(">");
+                buildContent(list, index, buffer);
+                buffer.push("</", tag, ">");
+            }
         } else {
-            buildRest(list, index, buffer);
+            buildContent(list, index, buffer);
         }
     }
 
-    function buildRest(list, index, buffer) {
+    function buildContent(list, index, buffer) {
         var length = list.length;
         while (index < length) {
             var item = list[index++];

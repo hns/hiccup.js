@@ -15,10 +15,10 @@ if (typeof exports === "undefined" || !exports) {
     var html4 = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"\n'
             + '   "http://www.w3.org/TR/html4/strict.dtd">\n',
         xhtmlStrict =
-              '  <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n'
+                '<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n'
             + '   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n',
         xhtmlTransitional =
-                '<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n'
+                '<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n'
             + '   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n',
         html5 = '<!DOCTYPE html>\n';
 

@@ -27,34 +27,45 @@ if (typeof exports === "undefined" || !exports) {
     }
 
     function build(list, buffer) {
-        var index = 0;
-        if (typeof list[index] === "string") {
-            var tag = splitTag(list[index++]);
+        var pos = 1;
+        if (typeof list[0] === "string") {
+            var tag = list[0];
+            if (tag[0] === "<") {
+                // first element is already a tag
+                writeContent(list, 0, buffer);
+                return;
+            }
+            tag = splitTag(tag);
             var attr = tag[1];
             tag = tag[0];
-            if (isObject(list[index])) {
-                mergeAttributes(attr, list[index++]);
+            if (isObject(list[1])) {
+                mergeAttributes(attr, list[1]);
+                pos = 2;
             }
             buffer.push("<", tag);
             for (var key in attr) {
                 writeAttribute(key, attr[key], buffer);
             }
-            if (index === list.length && !(tag in containerTags)) {
-                buffer.push(" />");
+            if (pos === list.length) {
+                if (tag in containerTags) {
+                    buffer.push("></", tag, ">");
+                } else {
+                    buffer.push(" />");
+                }
             } else {
                 buffer.push(">");
-                writeContent(list, index, buffer);
+                writeContent(list, pos, buffer);
                 buffer.push("</", tag, ">");
             }
         } else {
-            writeContent(list, index, buffer);
+            writeContent(list, 0, buffer);
         }
     }
 
-    function writeContent(list, index, buffer) {
+    function writeContent(list, pos, buffer) {
         var length = list.length;
-        while (index < length) {
-            var item = list[index++];
+        while (pos < length) {
+            var item = list[pos++];
             if (isArray(item)) {
                 build(item, buffer);
             } else {

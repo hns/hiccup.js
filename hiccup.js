@@ -12,13 +12,42 @@ if (typeof exports === "undefined" || !exports) {
     "head":1, "html":1, "i":1, "label":1, "li":1, "ol":1, "pre":1, "script":1,
     "span":1, "strong":1, "style":1, "textarea":1, "ul":1, "option":1};
 
-    var html = exports.html = function() {
-        var buffer = [];
-        buildHtml(arguments, buffer);
+    var html4 = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"\n'
+            + '   "http://www.w3.org/TR/html4/strict.dtd">\n',
+        xhtmlStrict =
+              '  <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n'
+            + '   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n',
+        xhtmlTransitional =
+                '<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n'
+            + '   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n',
+        html5 = '<!DOCTYPE html>\n';
+
+    var html = function(list, buffer) {
+        buildHtml(list, buffer);
         return buffer.join("");
     }
 
-    var css = exports.css = function() {
+    exports.html = function() {
+        return html(toArray(arguments), []);
+    }
+
+    exports.html4 = function() {
+        return html(["html", toArray(arguments)], [html4]);
+    }
+
+    exports.xhtmlStrict = function() {
+        return html(["html", toArray(arguments)], [xhtmlStrict]);
+    }
+
+    exports.xhtmlTransitional = function() {
+        return html(["html", toArray(arguments)], [xhtmlTransitional]);
+    }
+
+    exports.html5 = function() {
+        return html(["html", toArray(arguments)], [html5]);
+    }
+
+    exports.css = function() {
         var buffer = [];
         buildCss(arguments, buffer);
         return buffer.join("");
@@ -123,6 +152,11 @@ if (typeof exports === "undefined" || !exports) {
     // use native ES5 Array.isArray if available
     var isArray = Array.isArray || function(item) {
         return item && item.constructor === Array;
+    }
+
+    // convert arguments object to proper array
+    function toArray(args) {
+        return Array.prototype.slice.call(args);
     }
 
     function escape(str) {

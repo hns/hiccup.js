@@ -57,7 +57,7 @@ if (typeof exports === "undefined" || !exports) {
     // a jQuery selector with the rendered HTML
     if (typeof jQuery === "function") {
         jQuery.hiccup = function() {
-            return jQuery(html.apply(null, arguments));
+            return jQuery(html.call(null, toArray(arguments), []));
         };
     }
 

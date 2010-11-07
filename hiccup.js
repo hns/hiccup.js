@@ -74,7 +74,8 @@ if (typeof exports === "undefined" || !exports) {
         for (var i = 0; i < length; i++) {
             var item = list[i];
             if (typeof item === "string") {
-                selector = item;
+                selector = selector ?
+                    selector + ", " + item : item;
             } else if (item && typeof item === "object") {
                 if (selector != null) {
                     buffer.push(selector);
@@ -158,4 +159,3 @@ if (typeof exports === "undefined" || !exports) {
     }
 
 })(hiccup || exports);
-

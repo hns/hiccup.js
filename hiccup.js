@@ -14,7 +14,13 @@ if (typeof exports === "undefined" || !exports) {
 
     var html = exports.html = function() {
         var buffer = [];
-        build(arguments, buffer);
+        buildHtml(arguments, buffer);
+        return buffer.join("");
+    }
+
+    var css = exports.css = function() {
+        var buffer = [];
+        buildCss(arguments, buffer);
         return buffer.join("");
     }
 
@@ -26,7 +32,7 @@ if (typeof exports === "undefined" || !exports) {
         };
     }
 
-    function build(list, buffer) {
+    function buildHtml(list, buffer) {
         var pos = 1;
         if (typeof list[0] === "string") {
             var tag = list[0];
@@ -62,14 +68,31 @@ if (typeof exports === "undefined" || !exports) {
         }
     }
 
+    function buildCss(list, buffer) {
+        var length = list.length;
+        var selector;
+        for (var i = 0; i < length; i++) {
+            var item = list[i];
+            if (typeof item === "string") {
+                selector = item;
+            } else if (item && typeof item === "object") {
+                if (selector != null) {
+                    buffer.push(selector);
+                    writeStyle(item, buffer);
+                    selector = null;
+                }
+            }
+        }
+    }
+
     function writeContent(list, pos, buffer) {
         var length = list.length;
         while (pos < length) {
             var item = list[pos++];
             if (isArray(item)) {
-                build(item, buffer);
+                buildHtml(item, buffer);
             } else {
-                buffer.push(item);
+                buffer.push(String(item));
             }
         }
     }
@@ -84,8 +107,16 @@ if (typeof exports === "undefined" || !exports) {
         }
     }
 
+    function writeStyle(item, buffer) {
+        buffer.push(" {");
+        for (var key in item) {
+            buffer.push(toDash(key), ":", item[key], ";");
+        }
+        buffer.push("}\n");
+    }
+
     function isObject(item) {
-        return item instanceof Object && !isArray(item);
+        return item && typeof item === "object" && !isArray(item);
     }
 
     // use native ES5 Array.isArray if available
@@ -98,6 +129,13 @@ if (typeof exports === "undefined" || !exports) {
                   .replace(/"/g, '&quot;')
                   .replace(/>/g, '&gt;')
                   .replace(/</g, '&lt;');
+    }
+
+    // convert camelCase to dash-notation
+    function toDash(str) {
+        return str.replace(/([A-Z])/g, function($1){
+            return "-" + $1.toLowerCase();
+        });
     }
 
     function mergeAttributes(attr1, attr2) {

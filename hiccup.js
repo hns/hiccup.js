@@ -112,10 +112,11 @@ if (typeof exports === "undefined" || !exports) {
 
     function splitTag(tag) {
         var attr = {};
-        var match = tag.match(/([^\s\.#]+)(?:#([^\s\.#]+))?(?:\.([^\s#]+))?/);
-        if (match[2]) attr.id = match[2];
-        if (match[3]) attr["class"] = match[3].replace(/\./g, " ");
-        return [match[1], attr];
+        var c = tag.split(".");
+        var t = c[0].split("#");
+        if (t[1]) attr.id = t[1];
+        if (c.length > 1) attr["class"] = c.slice(1).join(" ");
+        return [t[0], attr];
     }
 
 })(hiccup || exports);

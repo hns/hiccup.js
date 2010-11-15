@@ -1,5 +1,5 @@
 var assert = require("assert");
-var {html} = require("../hiccup");
+var {html} = require("../lib/hiccup");
 
 exports.testTagNames = function() {
     // basic tags

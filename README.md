@@ -1,9 +1,9 @@
 hiccup.js
 =========
 
-This is a simple and **incomplete** port of the [Hiccup] HTML generation 
-library for Clojure to JavaScript. This script tries to triple as a plain 
-script file, a CommonJS module, and a jQuery plugin.
+This is a port of the [Hiccup] HTML generation library for Clojure to
+JavaScript. This script tries to triple as a plain script file, a CommonJS
+module, and a jQuery plugin.
 
 [Hiccup]: http://github.com/weavejester/hiccup
 

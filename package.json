@@ -1,7 +1,8 @@
 {
-    "name": "hiccup.js",
+    "name": "hiccup",
     "version": "0.0.0",
     "description": "Simple HTML generation library",
     "keywords": ["HTML", "Markup"],
-    "author": "Hannes Wallnöfer (http://hns.github.com/) <hannes@helma.at>"
+    "author": "Hannes Wallnöfer (http://hns.github.com/) <hannesw@gmail.com>",
+    "main": "./lib/hiccup.js"
 }
